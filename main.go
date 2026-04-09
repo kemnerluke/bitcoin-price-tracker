@@ -17,7 +17,7 @@ func main() {
 	// 1️⃣ Get quotes for specific coins
 	symbols := []string{"BTC", "ETH", "XRP"}
 
-	fmt.Println("=== Individual Coin Prices ===")
+	fmt.Println("==== Individual Coin Prices ====")
 	for _, symbol := range symbols {
 		coin, err := client.GetQuote(symbol)
 		if err != nil {

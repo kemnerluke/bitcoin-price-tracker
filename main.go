@@ -1,10 +1,11 @@
 package main
 
 import (
+	"bitcoin_price_checker/internal/coinmarketcap"
 	"fmt"
 	"log"
 
-	"bitcoin_price_checker/internal/coinmarketcap"
+	"github.com/xuri/excelize/v2"
 )
 
 func main() {
@@ -32,6 +33,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to fetch top listings: %v\n", err)
 	}
+
+	var file *excelize.File
+
+	file, err = coinmarketcap.WriteCoinsToExcel(topCoins)
+	if err != nil {
+		log.Fatalf("Failed to write coins to CSV: %v\n", err)
+	}
+	defer func() {
+		if closeErr := file.Close(); closeErr != nil {
+			log.Printf("Failed to close Excel file: %v\n", closeErr)
+		}
+	}()
+	fmt.Println(file, "\n=== Coins in CSV ===")
 
 	fmt.Println("\n=== Top 10 Coins ===")
 	for i, coin := range topCoins {
